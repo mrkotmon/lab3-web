@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <cc:attribute name="title" required="true"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <header class="header">
+            <p class="text header_text">#{cc.attrs.title}</p>
+
+            <h:panelGroup id="clockPanel" layout="block" styleClass="header_text">
+                <h:outputText value="#{clockBean.now}">
+                    <f:convertDateTime pattern="dd MMM yyyy HH:mm:ss" timeZone="Europe/Russia"/>
+                </h:outputText>
+            </h:panelGroup>
+
+            <p:poll interval="10"
+                    listener="#{clockBean.refresh}"
+                    update="clockPanel"
+                    global="false"/>
+
+        </header>
+    </cc:implementation>
+</ui:composition>

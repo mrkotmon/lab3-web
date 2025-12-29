@@ -1,0 +1,185 @@
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:p="http://primefaces.org/ui"
+          xmlns:my="http://xmlns.jcp.org/jsf/composite/myComponents"
+          xmlns:c="http://java.sun.com/jstl/core"
+    >
+    <my:head title="Ура 3 Лаба"/>
+    <body>
+    <my:header title="Павлов Руслан Алексеевич, Р3222, Вариант 75044 Дата:"/>
+    <main class="main">
+        <div class="section">
+            <h:link value="К начальной странице" styleClass="navigation-button2" outcome="goToIndex">
+            </h:link>
+            <h:form id="mainForm">
+
+
+                <h:inputHidden id="xHidden" value="#{xCoordinateBean.xCanvas}" />
+                <h:inputHidden id="yHidden" value="#{yCoordinateBean.YCanvas}">
+                <f:convertNumber locale="en" />
+                </h:inputHidden>
+                <h:inputHidden id="rHidden" value="#{rCoordinateBean.r}" />
+                <h:commandButton id="submitCanvas"
+                                 styleClass="hidden"
+                                 value="CheckCanvas"
+                                 actionListener="#{ControllerBean.addResult(xCoordinateBean.xCanvas, yCoordinateBean.YCanvas, rCoordinateBean.r)}">
+                    <f:ajax execute="@form"
+                            render="@form :resultsWrap"
+                            onevent="onCanvasAjax"/>
+                </h:commandButton>
+
+                <h:outputLabel for="xRadio" value="Выберите значение X: "/>
+                <div class="coords-input-wrapper">
+
+                    <h:selectOneRadio id="xRadio"
+                                      value="#{xCoordinateBean.xRadio}"
+                                      required="true"
+                                      requiredMessage="Выберите значение X от -4 до 4"
+                                      layout="lineDirection"
+                                      styleClass="coords-radio">
+                        <f:selectItem itemLabel="-4" itemValue="-4"/>
+                        <f:selectItem itemLabel="-3" itemValue="-3"/>
+                        <f:selectItem itemLabel="-2" itemValue="-2"/>
+                        <f:selectItem itemLabel="-1" itemValue="-1"/>
+                        <f:selectItem itemLabel="0"  itemValue="0"/>
+                        <f:selectItem itemLabel="1"  itemValue="1"/>
+                        <f:selectItem itemLabel="2"  itemValue="2"/>
+                        <f:selectItem itemLabel="3"  itemValue="3"/>
+                        <f:selectItem itemLabel="4"  itemValue="4"/>
+
+                    </h:selectOneRadio>
+
+                    <h:message for="xRadio" style="color: red; font-size: 12px; width: 100%"/>
+                </div>
+
+
+
+                <h:outputLabel for="yInput" value="Введите значение Y: "/>
+                <div class="coords-input-wrapper">
+                <h:inputText id="yInput"
+                             value="#{yCoordinateBean.YInput}"
+                             maxlength="7"
+                             class="coords-input" 
+                             required="true"
+                             requiredMessage="Введите значение Y от -5 до 3"
+                             validatorMessage="Введите значение Y от -5 до 3"
+                             converterMessage="Y должен быть числом">
+                    <f:convertNumber locale="en" maxFractionDigits="3" />
+                    <f:validateDoubleRange minimum="-5" maximum="3"/>
+                </h:inputText>
+
+                    <br/>
+                    <h:message for="yInput" style="color: red; font-size: 12px; width: 100%"/>
+                </div>
+
+                <h:outputLabel for="rRadio" value="Выберите значение R: "/>
+                <div class="coords-input-wrapper">
+
+                    <h:selectOneRadio id="rRadio"
+                                      value="#{rCoordinateBean.r}"
+                                      requiredMessage="Выберите значение R"
+                                      layout="lineDirection"
+                                      styleClass="coords-radio">
+                        <f:selectItem itemLabel="1"   itemValue="1"/>
+                        <f:selectItem itemLabel="2"   itemValue="2"/>
+                        <f:selectItem itemLabel="3"   itemValue="3"/>
+                        <f:selectItem itemLabel="4"   itemValue="4"/>
+                        <f:selectItem itemLabel="5"   itemValue="5"/>
+
+                        <f:ajax event="valueChange" onevent="syncRFromRadio"/>
+                    </h:selectOneRadio>
+
+                    <h:message for="rRadio" style="color: red; font-size: 12px; width: 100%"/>
+                </div>
+
+
+                <p:commandButton id="submit_button"
+                                 value="Отправить"
+                                 styleClass="submit-btn"
+                                 process="@form"
+                                 update="@form :resultsWrap"
+                                 oncomplete="if (!args.validationFailed) { redrawCanvas(); }"
+                                 actionListener="#{ControllerBean.addResult(xCoordinateBean.xRadio, yCoordinateBean.YInput, rCoordinateBean.r)}"/>
+
+
+
+
+                <h:commandButton id="clear_button"
+                                 value="Сбросить"
+                                 action="#{ControllerBean.clearResults}"
+                                 immediate="true" />
+
+            </h:form>
+        </div>
+
+        <div class="section">
+            <div class="axis-box">
+                <div class="canvas-block">
+                    <canvas id="canvas1"/>
+                    <canvas id="canvas2"/>
+                    <canvas id="canvas3"/>
+                </div>
+                <div class="axis-block">
+                    <div class="axis x">
+                        <span class="stick invisible"/>
+                        <div class="stick"><p class="mark">R</p></div>
+                        <div class="stick"><p class="mark">R/2</p></div>
+                        <span class="stick"/>
+                        <div class="stick"><p class="mark">-R/2</p></div>
+                        <div class="stick"><p class="mark">-R</p></div>
+                        <span class="stick invisible"/>
+                    </div>
+                    <div class="axis y">
+                        <span class="stick invisible"/>
+                        <div class="stick"><p class="mark rotated">R</p></div>
+                        <div class="stick"><p class="mark">R/2</p></div>
+                        <span class="stick"/>
+                        <div class="stick"><p class="mark">-R/2</p></div>
+                        <div class="stick"><p class="mark">-R</p></div>
+                        <span class="stick invisible"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h:panelGroup id="resultsWrap">
+                <h:dataTable captionClass="rows" styleClass="rows" id="results-table" value="#{ControllerBean.results}"
+                             var="result">
+                    <h:column styleClass="col">
+                        <f:facet name="header">
+                            <h:outputText value="X"/>
+                        </f:facet>
+                        <h:outputText value="#{result.x}"/>
+                    </h:column>
+                    <h:column styleClass="col">
+                        <f:facet name="header">a
+                            <h:outputText value="Y"/>
+                        </f:facet>
+                        <h:outputText value="#{result.y}"/>
+                    </h:column>
+                    <h:column styleClass="col">
+                        <f:facet name="header">
+                            <h:outputText value="R"/>
+                        </f:facet>
+                        <h:outputText value="#{result.r}"/>
+                    </h:column>
+                    <h:column styleClass="col">
+                        <f:facet name="header">
+                            <h:outputText value="Попал"/>
+                        </f:facet>
+                        <h:outputText value="#{result.result ? 'пробитие' : 'осечка'}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+
+        </div>
+    </main>
+        
+
+    <h:outputScript name="script.js"/>
+    <h:outputScript name="timer.js"/>
+    </body>
+    </html>

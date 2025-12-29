@@ -1,0 +1,9 @@
+beans\XCoordinateBean.class
+dataBaseUtils\ResultDAO.class
+dataBaseUtils\ResultEntity.class
+beans\ResultControllerBean.class
+beans\ClockBean.class
+beans\RCoordinateBean.class
+dataBaseUtils\DatabaseUtil.class
+utils\HitChecker.class
+beans\YCoordinateBean.class
