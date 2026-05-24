@@ -115,14 +115,22 @@
     <!-- ============ Блок: scp ====================================== -->
     <!-- Перемещение собранного артефакта на сервер по SCP.
          Сначала выполняется сборка (build). Требует jsch.jar в classpath. -->
-    <target name="scp" depends="build"
-            description="Развёртывание собранного проекта на сервере по SCP">
-        <scp file="${scp.artifact}"
-             todir="${scp.user}:${scp.password}@${scp.host}:${scp.remote.dir}"
-             port="${scp.port}"
-             trust="true"/>
-        <echo message="Отправлено: ${scp.artifact} -> ${scp.host}:${scp.remote.dir}"/>
-    </target>
+<target name="scp" depends="build" description="Отправка JAR на сервер">
+    <input message="Введите пароль Helios:"
+           addproperty="scp.password">
+        <handler type="secure"/>
+    </input>
+
+    <scp file="${scp.artifact}"
+         todir="${scp.user}@${scp.host}:${scp.remote.dir}"
+         password="${scp.password}"
+         port="${scp.port}"
+         trust="true"
+         verbose="true">
+        <additionalConfig key="PreferredAuthentications"
+                          value="keyboard-interactive,password"/>
+    </scp>
+</target>
 
     <!-- ============ Блок: diff ===================================== -->
     <!-- Проверяет состояние рабочей копии SVN и, если изменения НЕ
@@ -214,9 +222,10 @@
 
     <!-- diff ревизии, следующей за последней работающей (первой сломавшей). -->
     <target name="-history-make-diff" if="history.rolled.back">
-        <exec executable="expr" outputproperty="history.broken.rev" failonerror="true">
-            <arg value="${working.rev}"/><arg value="+"/><arg value="1"/>
-        </exec>
+       <exec executable="cmd" outputproperty="history.broken.rev" failonerror="true">
+    	<arg value="/c"/>
+    	<arg value="set /a ${working.rev}+1"/>
+	</exec>
         <echo message="Первая несобираемая ревизия: ${history.broken.rev}. Формирую diff..."/>
         <exec executable="${svn.executable}" output="${history.diff.file}" failonerror="true">
             <arg line="diff -c ${history.broken.rev}"/>
@@ -238,9 +247,10 @@
     </target>
 
     <target name="-history-back" unless="history.is.first">
-        <exec executable="expr" outputproperty="history.prev.rev" failonerror="true">
-            <arg value="${current.rev}"/><arg value="-"/><arg value="1"/>
-        </exec>
+        <exec executable="cmd" outputproperty="history.prev.rev" failonerror="true">
+    	<arg value="/c"/>
+    	<arg value="set /a ${current.rev}-1"/>
+	</exec>
         <echo message="Откат рабочей копии к ревизии ${history.prev.rev}..."/>
         <exec executable="${svn.executable}" failonerror="true">
             <arg line="update -r ${history.prev.rev}"/>
