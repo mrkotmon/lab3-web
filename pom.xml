@@ -25,6 +25,12 @@
         <artifactId>hsqldb</artifactId>
         <version>2.7.2</version>
         </dependency>
+	<dependency>
+    	<groupId>junit</groupId>
+    	<artifactId>junit</artifactId>
+    	<version>4.13.2</version>
+    	<scope>test</scope>
+	</dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -66,6 +72,11 @@
             <version>1.18.30</version>
             <scope>compile</scope>
         </dependency>
+	<dependency>
+    	<groupId>com.jcraft</groupId>
+    	<artifactId>jsch</artifactId>
+    	<version>0.1.55</version>
+	</dependency>
         <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>javax.faces-api</artifactId>

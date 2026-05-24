@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- =====================================================================
+     Сценарий сборки проекта lab3-web (Apache Ant)
+       compile - компиляция исходных кодов;
+       build   - компиляция (через compile) + упаковка в исполняемый jar;
+       clean   - удаление скомпилированных классов и временных файлов;
+       test    - сборка проекта (через build) и запуск JUnit-тестов.
+     Все переменные и константы вынесены в файл build.properties.
+     ===================================================================== -->
+<project name="lab3-web" default="build" basedir=".">
+
+    <!-- ============ Загрузка параметров и констант ================== -->
+    <property file="build.properties"/>
+
+    <!-- Путь к зависимостям проекта (jar-файлы из каталога lib). -->
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}" erroronmissingdir="false">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Путь для компиляции и запуска тестов: зависимости + классы проекта. -->
+    <path id="test.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement location="${classes.dir}"/>
+        <pathelement location="${test.classes.dir}"/>
+    </path>
+
+    <!-- ============ Блок: подготовка каталогов ====================== -->
+    <target name="init" description="Создание служебных каталогов сборки">
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${test.classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+        <mkdir dir="${reports.dir}"/>
+    </target>
+
+    <!-- ============ Блок: compile =================================== -->
+    <target name="compile" depends="init"
+            description="Компиляция исходных кодов проекта">
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               source="${java.source}" target="${java.target}"
+               encoding="${build.encoding}"
+               debug="${build.debug}"
+               includeantruntime="false">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <!-- Копируем ресурсы (в т.ч. файлы локализации) в каталог классов. -->
+        <copy todir="${classes.dir}" failonerror="false">
+            <fileset dir="${resources.dir}" erroronmissingdir="false"/>
+        </copy>
+    </target>
+
+    <!-- ============ Блок: build ===================================== -->
+    <target name="build" depends="compile"
+            description="Компиляция и упаковка в исполняемый jar-архив">
+        <jar destfile="${jar.file}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Manifest-Version"      value="1.0"/>
+                <attribute name="Main-Class"            value="${main.class}"/>
+                <attribute name="Implementation-Title"  value="${project.name}"/>
+                <attribute name="Implementation-Version" value="${project.version}"/>
+                <attribute name="Built-By"              value="${user.name}"/>
+            </manifest>
+        </jar>
+        <echo message="Создан архив: ${jar.file}"/>
+    </target>
+
+    <!-- ============ Блок: clean ===================================== -->
+    <target name="clean"
+            description="Удаление скомпилированных классов и временных файлов">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <!-- ============ Блок: test ====================================== -->
+    <target name="test" depends="build"
+            description="Сборка проекта и запуск JUnit-тестов">
+        <!-- Компиляция тестовых классов. -->
+        <javac srcdir="${test.src.dir}"
+               destdir="${test.classes.dir}"
+               source="${java.source}" target="${java.target}"
+               encoding="${build.encoding}"
+               debug="${build.debug}"
+               includeantruntime="false">
+            <classpath refid="test.classpath"/>
+        </javac>
+
+        <!-- Запуск тестов. -->
+        <junit printsummary="true" haltonfailure="true" fork="true">
+            <classpath refid="test.classpath"/>
+            <formatter type="plain" usefile="false"/>
+            <formatter type="xml"/>
+            <batchtest todir="${reports.dir}">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <!-- ============ Блок: native2ascii ============================= -->
+    <!-- Преобразует КОПИИ файлов локализации в ASCII (\uXXXX),
+         оригиналы в ${i18n.src.dir} остаются нетронутыми. -->
+    <target name="native2ascii"
+            description="native2ascii для копий файлов локализации">
+        <mkdir dir="${i18n.dest.dir}"/>
+        <native2ascii src="${i18n.src.dir}"
+                      dest="${i18n.dest.dir}"
+                      encoding="${i18n.encoding}"
+                      includes="**/*.properties"/>
+        <echo message="ASCII-копии локализации созданы в ${i18n.dest.dir}"/>
+    </target>
+
+    <!-- ============ Блок: scp ====================================== -->
+    <!-- Перемещение собранного артефакта на сервер по SCP.
+         Сначала выполняется сборка (build). Требует jsch.jar в classpath. -->
+    <target name="scp" depends="build"
+            description="Развёртывание собранного проекта на сервере по SCP">
+        <scp file="${scp.artifact}"
+             todir="${scp.user}:${scp.password}@${scp.host}:${scp.remote.dir}"
+             port="${scp.port}"
+             trust="true"/>
+        <echo message="Отправлено: ${scp.artifact} -> ${scp.host}:${scp.remote.dir}"/>
+    </target>
+
+    <!-- ============ Блок: diff ===================================== -->
+    <!-- Проверяет состояние рабочей копии SVN и, если изменения НЕ
+         затрагивают защищённые классы, выполняет commit. -->
+    <target name="diff"
+            depends="-diff-status, -diff-commit, -diff-skip, -diff-nochanges"
+            description="commit в SVN, если изменения не касаются защищённых классов"/>
+
+    <target name="-diff-status">
+        <exec executable="${svn.executable}" outputproperty="svn.status" failonerror="true">
+            <arg line="status -q"/>
+        </exec>
+        <echo message="Изменения в рабочей копии:${line.separator}${svn.status}"/>
+        <!-- Есть ли изменения вообще -->
+        <condition property="diff.has.changes">
+            <not><equals arg1="${svn.status}" arg2="" trim="true"/></not>
+        </condition>
+        <!-- Затронут ли хотя бы один защищённый класс -->
+        <condition property="diff.protected.touched">
+            <matches string="${svn.status}"
+                     pattern="${protected.classes.pattern}"
+                     multiline="true"/>
+        </condition>
+    </target>
+
+    <target name="-diff-commit" if="diff.has.changes" unless="diff.protected.touched">
+        <echo message="Защищённые классы не изменялись — выполняю commit."/>
+        <exec executable="${svn.executable}" failonerror="true">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="${svn.commit.message}"/>
+        </exec>
+    </target>
+
+    <target name="-diff-skip" if="diff.protected.touched">
+        <echo message="Изменены защищённые классы — commit отменён."/>
+    </target>
+
+    <target name="-diff-nochanges" unless="diff.has.changes">
+        <echo message="Изменений в рабочей копии нет — commit не требуется."/>
+    </target>
+
+    <!-- ============ Блок: history ================================== -->
+    <!-- Если проект не компилируется, по одной откатывает рабочую копию
+         к предыдущим ревизиям SVN, пока сборка не удастся либо не будет
+         достигнута самая первая ревизия. Если рабочая ревизия найдена
+         после отката, формирует diff первой несобираемой ревизии. -->
+    <target name="history"
+            description="Откат по ревизиям SVN до собираемой версии + diff сломавшей ревизии">
+        <exec executable="${svn.executable}" outputproperty="history.start.rev" failonerror="true">
+            <arg line="info --show-item revision"/>
+        </exec>
+        <echo message="Текущая ревизия рабочей копии: ${history.start.rev}"/>
+        <antcall target="-history-step">
+            <param name="current.rev" value="${history.start.rev}"/>
+        </antcall>
+    </target>
+
+    <!-- Одна итерация: попытка компиляции на ревизии ${current.rev}. -->
+    <target name="-history-step">
+        <echo message="==> Пробую скомпилировать ревизию ${current.rev}"/>
+        <delete dir="${classes.dir}" quiet="true"/>
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+               source="${java.source}" target="${java.target}" encoding="${build.encoding}"
+               includeantruntime="false"
+               failonerror="false" errorproperty="compile.failed.r${current.rev}">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <!-- ветка успеха (флаг ошибки не выставлен) -->
+        <antcall target="-history-success">
+            <param name="current.rev" value="${current.rev}"/>
+        </antcall>
+        <!-- ветка неудачи (флаг ошибки выставлен) -->
+        <antcall target="-history-failure">
+            <param name="current.rev" value="${current.rev}"/>
+        </antcall>
+    </target>
+
+    <target name="-history-success" unless="compile.failed.r${current.rev}">
+        <echo message="Проект успешно собран на ревизии ${current.rev}."/>
+        <condition property="history.rolled.back">
+            <not><equals arg1="${current.rev}" arg2="${history.start.rev}"/></not>
+        </condition>
+        <antcall target="-history-make-diff">
+            <param name="working.rev" value="${current.rev}"/>
+        </antcall>
+    </target>
+
+    <!-- diff ревизии, следующей за последней работающей (первой сломавшей). -->
+    <target name="-history-make-diff" if="history.rolled.back">
+        <exec executable="expr" outputproperty="history.broken.rev" failonerror="true">
+            <arg value="${working.rev}"/><arg value="+"/><arg value="1"/>
+        </exec>
+        <echo message="Первая несобираемая ревизия: ${history.broken.rev}. Формирую diff..."/>
+        <exec executable="${svn.executable}" output="${history.diff.file}" failonerror="true">
+            <arg line="diff -c ${history.broken.rev}"/>
+        </exec>
+        <echo message="diff сохранён в ${history.diff.file}"/>
+    </target>
+
+    <target name="-history-failure" if="compile.failed.r${current.rev}">
+        <echo message="Ревизия ${current.rev} не компилируется."/>
+        <condition property="history.is.first">
+            <equals arg1="${current.rev}" arg2="1"/>
+        </condition>
+        <antcall target="-history-give-up">
+            <param name="current.rev" value="${current.rev}"/>
+        </antcall>
+        <antcall target="-history-back">
+            <param name="current.rev" value="${current.rev}"/>
+        </antcall>
+    </target>
+
+    <target name="-history-back" unless="history.is.first">
+        <exec executable="expr" outputproperty="history.prev.rev" failonerror="true">
+            <arg value="${current.rev}"/><arg value="-"/><arg value="1"/>
+        </exec>
+        <echo message="Откат рабочей копии к ревизии ${history.prev.rev}..."/>
+        <exec executable="${svn.executable}" failonerror="true">
+            <arg line="update -r ${history.prev.rev}"/>
+        </exec>
+        <antcall target="-history-step">
+            <param name="current.rev" value="${history.prev.rev}"/>
+        </antcall>
+    </target>
+
+    <target name="-history-give-up" if="history.is.first">
+        <fail message="Достигнута первая ревизия (${current.rev}), но проект так и не компилируется."/>
+    </target>
+
+</project>

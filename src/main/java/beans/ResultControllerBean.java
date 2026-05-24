@@ -3,6 +3,7 @@ package beans;
 import dataBaseUtils.ResultDAO;
 import dataBaseUtils.ResultEntity;
 import utils.HitChecker;
+import utils.Messages;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -31,7 +32,7 @@ public class ResultControllerBean implements Serializable {
         if (results == null) {
             results = new ArrayList<>();
         }
-        logger.info("ResultControllerBean инициализирован, загружено " + results.size() + " строк");
+        logger.info(Messages.format("controller.init", results.size()));
     }
 
     public List<ResultEntity> getResults() {
@@ -39,10 +40,10 @@ public class ResultControllerBean implements Serializable {
     }
 
     public void addResult(Double x, Double y, Double r) {
-        logger.info("Поступили значения: x=" + x + ", y=" + y + ", r=" + r);
+        logger.info(Messages.format("controller.values", x, y, r));
 
         if (!validate(x, y, r)) {
-            logger.warning("Валидация не пройдена");
+            logger.warning(Messages.get("controller.validationFailed"));
             return;
         }
 
@@ -58,10 +59,11 @@ public class ResultControllerBean implements Serializable {
         resultDAO.save(entity);
         results.add(entity);
 
-        logger.info(String.format(
-                "Добавлен новый результат: X=%.3f, Y=%.3f, R=%.3f, hit=%s",
-                x, y, r, hit
-        ));
+        logger.info(Messages.format("controller.added",
+                String.format("%.3f", x),
+                String.format("%.3f", y),
+                String.format("%.3f", r),
+                hit));
     }
 
     public void clearResults() {
@@ -75,31 +77,31 @@ public class ResultControllerBean implements Serializable {
 
         if (x == null) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "X не задан", null));
+                    Messages.get("error.x.empty"), null));
             ok = false;
         } else if (x < -4 || x > 4) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "X должен быть в диапазоне [-4; 4]", null));
+                    Messages.get("error.x.range"), null));
             ok = false;
         }
 
         if (y == null) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Y не задан", null));
+                    Messages.get("error.y.empty"), null));
             ok = false;
         } else if (y < -5 || y > 3) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Y должен быть в диапазоне [-5; 3]", null));
+                    Messages.get("error.y.range"), null));
             ok = false;
         }
 
         if (r == null) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "R не задан", null));
+                    Messages.get("error.r.empty"), null));
             ok = false;
         } else if (r <= 0) {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "R должен быть положительным", null));
+                    Messages.get("error.r.positive"), null));
             ok = false;
         }
 

@@ -4,6 +4,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import utils.Messages;
 
 public class ResultDAO {
 
@@ -26,7 +27,7 @@ public class ResultDAO {
              Statement st = conn.createStatement()) {
             st.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка создания таблицы RESULTS", e);
+            throw new RuntimeException(Messages.get("error.db.createTable"), e);
         }
     }
 
@@ -45,7 +46,7 @@ public class ResultDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка сохранения результата", e);
+            throw new RuntimeException(Messages.get("error.db.save"), e);
         }
     }
 
@@ -69,7 +70,7 @@ public class ResultDAO {
                 list.add(entity);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка получения списка результатов", e);
+            throw new RuntimeException(Messages.get("error.db.getAll"), e);
         }
 
         return list;
@@ -80,7 +81,7 @@ public class ResultDAO {
              Statement st = conn.createStatement()) {
             st.executeUpdate("TRUNCATE TABLE RESULTS");
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка очистки таблицы RESULTS", e);
+            throw new RuntimeException(Messages.get("error.db.clear"), e);
         }
     }
 }

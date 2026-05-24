@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="DESKTOP-0HFE24F" name="utils.HitCheckerTest" skipped="0" tests="7" time="0.07" timestamp="2026-05-24T19:22:28">
+  <properties>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="ant.library.dir" value="C:\Program Files\apache-ant-1.10.17\lib" />
+    <property name="java.specification.version" value="11" />
+    <property name="ant.project.name" value="lab3-web" />
+    <property name="sun.cpu.isalist" value="amd64" />
+    <property name="sun.jnu.encoding" value="Cp1251" />
+    <property name="project.name" value="lab3" />
+    <property name="jar.dir" value="build/jar" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="java.vendor.url" value="https://adoptium.net/" />
+    <property name="resources.dir" value="src/main/resources" />
+    <property name="sun.boot.library.path" value="C:\Program Files\jdk-11.0.23+9\bin" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner utils.HitCheckerTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=true formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\User\Desktop\lab3\build\reports\TEST-utils.HitCheckerTest.xml crashfile=C:\Users\User\Desktop\lab3\junitvmwatcher9866244256558874687.properties propsfile=C:\Users\User\Desktop\lab3\junit15936637650702412554.properties" />
+    <property name="test.classes.dir" value="build/test-classes" />
+    <property name="jdk.debug" value="release" />
+    <property name="sun.stderr.encoding" value="cp866" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="java.version.date" value="2024-04-16" />
+    <property name="project.version" value="1.0" />
+    <property name="java.home" value="C:\Program Files\jdk-11.0.23+9" />
+    <property name="basedir" value="C:\Users\User\Desktop\lab3" />
+    <property name="file.separator" value="\" />
+    <property name="i18n.dest.dir" value="build/i18n" />
+    <property name="java.vm.compressedOopsMode" value="Zero based" />
+    <property name="line.separator" value="&#xd;&#xa;" />
+    <property name="sun.stdout.encoding" value="cp866" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="svn.executable" value="svn" />
+    <property name="java.source" value="1.8" />
+    <property name="svn.commit.message" value="Auto-commit from Ant build" />
+    <property name="user.script" value="" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="protected.classes.pattern" value="(HitChecker|DatabaseUtil)\.java" />
+    <property name="java.runtime.version" value="11.0.23+9" />
+    <property name="user.name" value="User" />
+    <property name="file.encoding" value="Cp1251" />
+    <property name="java.vendor.version" value="Temurin-11.0.23+9" />
+    <property name="history.diff.file" value="build/history-diff.txt" />
+    <property name="build.dir" value="build" />
+    <property name="java.io.tmpdir" value="C:\Users\User\AppData\Local\Temp\" />
+    <property name="java.version" value="11.0.23" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="ant.home" value="C:\Program Files\apache-ant-1.10.17\bin\.." />
+    <property name="lib.dir" value="lib" />
+    <property name="scp.remote.dir" value="/home/deployer/deploy" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.17 compiled on April 6 2026" />
+    <property name="java.library.path" value="C:\Program Files\jdk-11.0.23+9\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\jdk-11.0.23+9\bin;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\OpenSSH;C:\Program Files\OpenSSH\OpenSSH-Win64;C:\Program Files\jdk-25.0.1+8\bin;C:\Program Files\Java\jre1.8.0_471\bin;C:\Program Files\wildfly-25\wildfly-26.1.3.Final\bin;C:\Program Files\wildfly\bin;C:\Program Files\apache-maven-3.9.6\apache-maven-3.9.11\bin;C:\Program Files\jdk8u412-b08\bin;C:\Program Files\jdk-11.0.23+9\bin;C:\Program Files\nodejs\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Users\User\Desktop\wrench;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Git\cmd;C:\Users\User\AppData\Local\Programs\Python\Python314\Scripts\;C:\Users\User\AppData\Local\Programs\Python\Python314\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\Users\User\AppData\Roaming\npm;C:\Users\User\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\apache-ant-1.10.17\bin;;." />
+    <property name="java.vendor" value="Eclipse Adoptium" />
+    <property name="java.specification.maintenance.version" value="2" />
+    <property name="classes.dir" value="build/classes" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="sun.desktop" value="windows" />
+    <property name="ant.file.type" value="file" />
+    <property name="scp.port" value="22" />
+    <property name="test.src.dir" value="src/test/java" />
+    <property name="java.class.path" value="C:\Users\User\Desktop\lab3\lib\FastInfoset-1.2.15.jar;C:\Users\User\Desktop\lab3\lib\antlr-2.7.7.jar;C:\Users\User\Desktop\lab3\lib\byte-buddy-1.11.20.jar;C:\Users\User\Desktop\lab3\lib\cdi-api-2.0-PFD2.jar;C:\Users\User\Desktop\lab3\lib\checker-qual-3.31.0.jar;C:\Users\User\Desktop\lab3\lib\classmate-1.5.1.jar;C:\Users\User\Desktop\lab3\lib\eclipselink-3.1.0-M1.jar;C:\Users\User\Desktop\lab3\lib\gson-2.8.9.jar;C:\Users\User\Desktop\lab3\lib\hamcrest-core-1.3.jar;C:\Users\User\Desktop\lab3\lib\hibernate-commons-annotations-5.1.2.Final.jar;C:\Users\User\Desktop\lab3\lib\hibernate-core-5.6.3.Final.jar;C:\Users\User\Desktop\lab3\lib\hsqldb-2.7.2.jar;C:\Users\User\Desktop\lab3\lib\istack-commons-runtime-3.0.7.jar;C:\Users\User\Desktop\lab3\lib\jakarta.activation-2.0.1.jar;C:\Users\User\Desktop\lab3\lib\jakarta.persistence-api-3.0.0.jar;C:\Users\User\Desktop\lab3\lib\jakarta.xml.bind-api-3.0.1.jar;C:\Users\User\Desktop\lab3\lib\jandex-2.2.3.Final.jar;C:\Users\User\Desktop\lab3\lib\javaee-api-6.0.jar;C:\Users\User\Desktop\lab3\lib\javax.activation-api-1.2.0.jar;C:\Users\User\Desktop\lab3\lib\javax.annotation-api-1.3.2.jar;C:\Users\User\Desktop\lab3\lib\javax.ejb-api-3.2.2.jar;C:\Users\User\Desktop\lab3\lib\javax.el-api-3.0.0.jar;C:\Users\User\Desktop\lab3\lib\javax.faces-api-2.2-m12.jar;C:\Users\User\Desktop\lab3\lib\javax.inject-1.jar;C:\Users\User\Desktop\lab3\lib\javax.interceptor-api-1.2.jar;C:\Users\User\Desktop\lab3\lib\javax.persistence-api-2.2.jar;C:\Users\User\Desktop\lab3\lib\javax.servlet-api-4.0.1.jar;C:\Users\User\Desktop\lab3\lib\javax.transaction-api-1.3.jar;C:\Users\User\Desktop\lab3\lib\jaxb-api-2.3.1.jar;C:\Users\User\Desktop\lab3\lib\jaxb-core-3.0.2-b01.jar;C:\Users\User\Desktop\lab3\lib\jaxb-runtime-2.3.1.jar;C:\Users\User\Desktop\lab3\lib\jaxb-xjc-3.0.2-b01.jar;C:\Users\User\Desktop\lab3\lib\jboss-logging-3.4.2.Final.jar;C:\Users\User\Desktop\lab3\lib\jboss-transaction-api_1.2_spec-1.1.1.Final.jar;C:\Users\User\Desktop\lab3\lib\junit-4.13.2.jar;C:\Users\User\Desktop\lab3\lib\lombok-1.18.30.jar;C:\Users\User\Desktop\lab3\lib\postgresql-42.6.1.jar;C:\Users\User\Desktop\lab3\lib\primefaces-10.0.0.jar;C:\Users\User\Desktop\lab3\lib\stax-ex-1.8.jar;C:\Users\User\Desktop\lab3\lib\txw2-2.3.1.jar;C:\Users\User\Desktop\lab3\build\classes;C:\Users\User\Desktop\lab3\build\test-classes;C:\Program Files\apache-ant-1.10.17\lib\ant-launcher.jar;C:\Program Files\apache-ant-1.10.17\lib\ant.jar;C:\Program Files\apache-ant-1.10.17\lib\ant-junit.jar;C:\Program Files\apache-ant-1.10.17\lib\ant-junit4.jar" />
+    <property name="java.vm.vendor" value="Eclipse Adoptium" />
+    <property name="scp.artifact" value="build/jar/lab3-1.0.jar" />
+    <property name="user.variant" value="" />
+    <property name="user.timezone" value="" />
+    <property name="os.name" value="Windows 11" />
+    <property name="java.vm.specification.version" value="11" />
+    <property name="reports.dir" value="build/reports" />
+    <property name="scp.password" value="changeit" />
+    <property name="java.target" value="1.8" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="user.country" value="RU" />
+    <property name="build.debug" value="true" />
+    <property name="main.class" value="utils.HitChecker" />
+    <property name="i18n.src.dir" value="src/main/resources/i18n" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="user.home" value="C:\Users\User" />
+    <property name="user.language" value="ru" />
+    <property name="ant.java.version" value="11" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="i18n.encoding" value="UTF-8" />
+    <property name="scp.host" value="example.com" />
+    <property name="ant.file.lab3-web" value="C:\Users\User\Desktop\lab3\build.xml" />
+    <property name="ant.file" value="C:\Users\User\Desktop\lab3\build.xml" />
+    <property name="path.separator" value=";" />
+    <property name="build.encoding" value="UTF-8" />
+    <property name="os.version" value="10.0" />
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment" />
+    <property name="scp.user" value="deployer" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="jar.file" value="build/jar/lab3-1.0.jar" />
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM" />
+    <property name="ant.core.lib" value="C:\Program Files\apache-ant-1.10.17\lib\ant.jar" />
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues" />
+    <property name="user.dir" value="C:\Users\User\Desktop\lab3" />
+    <property name="os.arch" value="amd64" />
+    <property name="ant.file.type.lab3-web" value="file" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="java.vm.version" value="11.0.23+9" />
+    <property name="java.class.version" value="55.0" />
+    <property name="src.dir" value="src/main/java" />
+    <property name="ant.project.default-target" value="build" />
+  </properties>
+  <testcase classname="utils.HitCheckerTest" name="quarterCircleAreaHit" time="0.003" />
+  <testcase classname="utils.HitCheckerTest" name="triangleAreaHit" time="0.0" />
+  <testcase classname="utils.HitCheckerTest" name="outsideTriangleIsMiss" time="0.0" />
+  <testcase classname="utils.HitCheckerTest" name="rectangleAreaHit" time="0.0" />
+  <testcase classname="utils.HitCheckerTest" name="thirdQuadrantIsMiss" time="0.0" />
+  <testcase classname="utils.HitCheckerTest" name="originIsHit" time="0.0" />
+  <testcase classname="utils.HitCheckerTest" name="outsideRectangleIsMiss" time="0.0" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
